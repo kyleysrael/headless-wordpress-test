@@ -38,8 +38,8 @@ const Page = () => {
                 elementorCssUrl
                 elementorJsUrl
                 globalCssUrl
+                globalPostCssUrl
                 frontendCssUrl
-                frontendMinCssUrl
                 seo {
                   title
                   metaDesc
