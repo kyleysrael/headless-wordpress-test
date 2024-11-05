@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import SEOProvider from "@/providers/SeoProvider";
+import { Loader2 } from "lucide-react";
 
 interface PageContent {
   title: string;
@@ -99,7 +100,17 @@ const Page = () => {
   }, []);
 
   if (!pageData || !isClient) {
-    return <p>Loading...</p>;
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-background">
+        <Loader2 className="w-16 h-16 text-primary animate-spin" />
+        <h2 className="mt-4 text-xl font-semibold text-foreground">
+          Loading content...
+        </h2>
+        <p className="mt-2 text-muted-foreground">
+          Please wait while we fetch the latest posts from WordPress.
+        </p>
+      </div>
+    );
   }
 
   return (
