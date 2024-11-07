@@ -24,7 +24,8 @@ export async function generateMetadata({
 export default async function Page({ params }: { params: Params }) {
   const pageId = params.id
 
-  console.log(pageId) // Log the page ID to verify
+  console.log(pageId)
+
   return (
     <main>
       <Elementor number={parseInt(pageId, 10)} />

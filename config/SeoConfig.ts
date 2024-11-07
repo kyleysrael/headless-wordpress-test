@@ -7,45 +7,45 @@ interface Metadata {
   openGraph: {
     title: string
     description: string
-    images: string[]
+    images: string
   }
 }
 
 export const generateMetadataServerSide = async (
   pageId: string
 ): Promise<Metadata> => {
-  const response = await axios.post(
-    "https://limegreen-hornet-657242.hostingersite.com/graphql",
-    {
-      query: `
-        query GetPageWithSEO {
-          page(id: "${pageId}", idType: DATABASE_ID) {
-            title
-            seo {
-              title
-              metaDesc
-              opengraphImage {
-                sourceUrl
+  try {
+    const response = await axios.post(
+      "https://limegreen-hornet-657242.hostingersite.com/graphql",
+      {
+        query: `
+            query GetPageWithSEO {
+              page(id: "${pageId}", idType: DATABASE_ID) {
+                title
+                seo {
+                  title
+                  metaDesc
+                }
               }
             }
-          }
-        }
-      `,
-    }
-  )
+          `,
+      }
+    )
 
-  const data = response.data.data.page
+    const data = response.data.data.page
 
-  return {
-    metadatabase: "",
-    title: data?.seo.title || data?.title,
-    description: data?.seo.metaDesc,
-    openGraph: {
+    return {
+      metadatabase: "",
       title: data?.seo.title || data?.title,
       description: data?.seo.metaDesc,
-      images: data?.seo.opengraphImage
-        ? [data?.seo.opengraphImage.sourceUrl]
-        : [],
-    },
+      openGraph: {
+        title: data?.seo.title || data?.title,
+        description: data?.seo.metaDesc,
+        images: "/favicon.ico",
+      },
+    }
+  } catch (error) {
+    console.error("Error fetching page data:", error)
+    throw new Error("Failed to generate metadata")
   }
 }
