@@ -1,21 +1,26 @@
 import Elementor from "@/components/organism/elementor";
-import { generateMetadataServerSide } from "@/providers/SeoFunctions"; // Server-side function
+import { generateMetadataServerSide } from "@/providers/SeoFunctions";
 import type { Metadata } from "next";
 
-type Props = {
-  params: { id: string };
-};
+type Params = Promise<{ id: string }>;
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const pageId = params.id || "41";
+export async function generateMetadata({
+  params
+}: {
+  params: Params;
+}): Promise<Metadata> {
+  const resolvedParams = await params;
+  const pageId = resolvedParams.id || "41";
   const metadata = await generateMetadataServerSide(pageId);
   return metadata;
 }
 
-export default function Page({ params }: Props) {
+export default async function Page({ params }: { params: Params }) {
+  const resolvedParams = await params;
+
   return (
     <main>
-      <h1>{params.id}</h1>
+      <h1 className="text-3xl text-center">{resolvedParams.id}</h1>
       <Elementor />
     </main>
   );

@@ -119,7 +119,7 @@ const Elementor = () => {
 
   return (
     <div>
-      <h1>{pageData.title}</h1>
+      <h1 className="text-3xl text-center">{pageData.title}</h1>
       <div dangerouslySetInnerHTML={{ __html: pageData.content }} />
     </div>
   );
