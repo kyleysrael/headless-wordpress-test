@@ -3,23 +3,28 @@ import type { Metadata } from "next"
 import { generateMetadataServerSide } from "@/config/SeoConfig"
 import Elementor from "@/components/Organism/Elementor"
 
-type Params = Promise<{ id: string }>
+type Params = { id: string }
+
+export async function generateStaticParams(): Promise<Params[]> {
+  const pageIds = ["1", "2", "3"]
+
+  return pageIds.map((id) => ({ id }))
+}
 
 export async function generateMetadata({
   params,
 }: {
   params: Params
 }): Promise<Metadata> {
-  const resolvedParams = await params
-  const pageId = resolvedParams.id
+  const pageId = params.id
   const metadata = await generateMetadataServerSide(pageId)
   return metadata
 }
 
 export default async function Page({ params }: { params: Params }) {
-  const resolvedParams = await params
+  const pageId = params.id
 
-  console.log(resolvedParams.id)
+  console.log(pageId)
   return (
     <main>
       <Elementor number={35} />
