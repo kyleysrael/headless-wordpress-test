@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import SEOProvider from "@/providers/SeoProvider";
+import { Loader2 } from "lucide-react";
 
 interface PageContent {
   title: string;
@@ -20,7 +20,7 @@ interface PageContent {
   };
 }
 
-const Page = () => {
+const Elementor = () => {
   const [pageData, setPageData] = useState<PageContent | null>(null);
   const [isClient, setIsClient] = useState(false);
 
@@ -29,17 +29,19 @@ const Page = () => {
 
     const fetchPageContent = async () => {
       try {
-        const response = await axios.post("http://test-dlsu.test/graphql", {
-          query: `
+        const response = await axios.post(
+          "https://limegreen-hornet-657242.hostingersite.com/graphql",
+          {
+            query: `
             query GetPageWithSEO {
-              page(id: "35", idType: DATABASE_ID) {
+              page(id: "41", idType: DATABASE_ID) {
                 title
                 content
                 elementorCssUrl
                 elementorJsUrl
                 globalCssUrl
-                globalPostCssUrl
                 frontendCssUrl
+                frontendMinCssUrl
                 seo {
                   title
                   metaDesc
@@ -50,7 +52,8 @@ const Page = () => {
               }
             }
           `
-        });
+          }
+        );
 
         const data = response.data.data.page;
         setPageData(data);
@@ -99,18 +102,27 @@ const Page = () => {
   }, []);
 
   if (!pageData || !isClient) {
-    return <p>Loading...</p>;
+    return (
+      <div className="fixed inset-0 flex items-center justify-center">
+        <div className="flex flex-col items-center justify-center min-h-screen bg-background">
+          <Loader2 className="w-16 h-16 text-primary animate-spin" />
+          <h2 className="mt-4 text-xl font-semibold text-foreground">
+            Loading content...
+          </h2>
+          <p className="mt-2 text-muted-foreground">
+            Please wait while we fetch the latest posts from WordPress.
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <SEOProvider
-      metaTitle={pageData.seo.title}
-      metaDescription={pageData.seo.metaDesc}
-      //   metaImage={pageData.seo.opengraphImage?.sourceUrl}
-    >
+    <div>
+      <h1>{pageData.title}</h1>
       <div dangerouslySetInnerHTML={{ __html: pageData.content }} />
-    </SEOProvider>
+    </div>
   );
 };
 
-export default Page;
+export default Elementor;
