@@ -1,16 +1,50 @@
-import { SEOProvider } from "@/providers/SeoProvider";
-import "./globals.css";
-export const metadata = {
-  title: "My Website",
-  description: "A description for my website"
-};
+import "@/styles/globals.css"
+import { Metadata } from "next"
+import { SEOProvider } from "@/providers/SeoProvider"
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+import { siteConfig } from "@/config/site"
+import { fontSans } from "@/lib/fonts"
+import { cn } from "@/lib/utils"
+import { TailwindIndicator } from "@/components/tailwind-indicator"
+
+export const metadata: Metadata = {
+  title: {
+    default: siteConfig.name,
+    template: `%s - ${siteConfig.name}`,
+  },
+  description: siteConfig.description,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "white" },
+    { media: "(prefers-color-scheme: dark)", color: "black" },
+  ],
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon-16x16.png",
+    apple: "/apple-touch-icon.png",
+  },
+}
+
+interface RootLayoutProps {
+  children: React.ReactNode
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en">
-      <body>
-        <SEOProvider>{children}</SEOProvider>
-      </body>
-    </html>
-  );
+    <SEOProvider>
+      <html lang="en" suppressHydrationWarning>
+        <body
+          className={cn(
+            "min-h-screen bg-background font-sans antialiased",
+            fontSans.variable
+          )}
+        >
+          <div className="relative flex min-h-screen flex-col">
+            {/* <SiteHeader /> */}
+            <div className="flex-1">{children}</div>
+          </div>
+          <TailwindIndicator />
+        </body>
+      </html>
+    </SEOProvider>
+  )
 }
