@@ -10,7 +10,7 @@ export async function generateMetadata({
   params: Params;
 }): Promise<Metadata> {
   const resolvedParams = await params;
-  const pageId = resolvedParams.id || "41";
+  const pageId = resolvedParams.id;
   const metadata = await generateMetadataServerSide(pageId);
   return metadata;
 }
@@ -18,10 +18,11 @@ export async function generateMetadata({
 export default async function Page({ params }: { params: Params }) {
   const resolvedParams = await params;
 
+  console.log(resolvedParams.id);
   return (
     <main>
       <h1 className="text-3xl text-center">{resolvedParams.id}</h1>
-      <Elementor number={41} />
+      <Elementor number={35} />
     </main>
   );
 }

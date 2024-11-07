@@ -34,12 +34,12 @@ export const generateMetadataServerSide = async (pageId: string): Promise<Metada
   const data = response.data.data.page;
 
   return {
-    title: data.seo.title || data.title,
-    description: data.seo.metaDesc,
+    title: data?.seo.title || data?.title,
+    description: data?.seo.metaDesc,
     openGraph: {
-      title: data.seo.title || data.title,
-      description: data.seo.metaDesc,
-      images: data.seo.opengraphImage ? [data.seo.opengraphImage.sourceUrl] : []
+      title: data?.seo.title || data?.title,
+      description: data?.seo.metaDesc,
+      images: data?.seo.opengraphImage ? [data?.seo.opengraphImage.sourceUrl] : []
     }
   };
 };

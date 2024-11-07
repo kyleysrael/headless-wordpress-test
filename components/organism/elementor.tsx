@@ -20,7 +20,7 @@ interface PageContent {
   };
 }
 
-const Elementor = () => {
+const Elementor = ({ number }: { number: string | number }) => {
   const [pageData, setPageData] = useState<PageContent | null>(null);
   const [isClient, setIsClient] = useState(false);
 
@@ -34,7 +34,7 @@ const Elementor = () => {
           {
             query: `
             query GetPageWithSEO {
-              page(id: "41", idType: DATABASE_ID) {
+              page(id: "${number}", idType: DATABASE_ID) {
                 title
                 content
                 elementorCssUrl
