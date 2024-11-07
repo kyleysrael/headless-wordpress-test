@@ -6,7 +6,7 @@ import Elementor from "@/components/Organism/Elementor"
 type Params = { id: string }
 
 export async function generateStaticParams(): Promise<Params[]> {
-  const pageIds = ["1", "2", "3"]
+  const pageIds = Array.from({ length: 200 }, (_, i) => (i + 1).toString())
 
   return pageIds.map((id) => ({ id }))
 }
@@ -24,10 +24,10 @@ export async function generateMetadata({
 export default async function Page({ params }: { params: Params }) {
   const pageId = params.id
 
-  console.log(pageId)
+  console.log(pageId) // Log the page ID to verify
   return (
     <main>
-      <Elementor number={35} />
+      <Elementor number={parseInt(pageId, 10)} />
     </main>
   )
 }
