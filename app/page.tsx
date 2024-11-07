@@ -30,10 +30,12 @@ const Page = () => {
 
     const fetchPageContent = async () => {
       try {
-        const response = await axios.post("http://test-dlsu.test/graphql", {
-          query: `
+        const response = await axios.post(
+          "https://limegreen-hornet-657242.hostingersite.com/graphql",
+          {
+            query: `
             query GetPageWithSEO {
-              page(id: "35", idType: DATABASE_ID) {
+              page(id: "41", idType: DATABASE_ID) {
                 title
                 content
                 elementorCssUrl
@@ -51,7 +53,8 @@ const Page = () => {
               }
             }
           `
-        });
+          }
+        );
 
         const data = response.data.data.page;
         setPageData(data);
@@ -119,6 +122,7 @@ const Page = () => {
       metaDescription={pageData.seo.metaDesc}
       //   metaImage={pageData.seo.opengraphImage?.sourceUrl}
     >
+      <h1 className="text-3xl font-bold text-center">{pageData.title}</h1>
       <div dangerouslySetInnerHTML={{ __html: pageData.content }} />
     </SEOProvider>
   );
